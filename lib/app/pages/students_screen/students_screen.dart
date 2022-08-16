@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:school_driver/app/data/global/global%20Auth/auth_controller.dart';
+import 'package:school_driver/app/data/models/students_model.dart';
+import 'package:school_driver/app/pages/components/avatar_component.dart';
+import 'package:school_driver/app/pages/components/drawer_component.dart';
+import 'package:school_driver/app/pages/students_screen/componnetns/students_progress.dart';
 import 'package:school_driver/app/pages/students_screen/students_controller.dart';
 import 'package:school_driver/app/theme/app_colors.dart';
-import 'package:school_driver/main.dart';
 
 class StudentsScreen extends StatelessWidget {
   final StudentsScreenController _screenController =
       Get.find<StudentsScreenController>();
+  final AuthController _authController = Get.find<AuthController>();
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +22,9 @@ class StudentsScreen extends StatelessWidget {
         physics: BouncingScrollPhysics(),
         slivers: [
           SliverAppBar(
-            backgroundColor: AppColors.SECONDARY_COLOR,
+            backgroundColor: (_authController.time.value == "am")
+                ? AppColors.PRIMARY_COLOR
+                : AppColors.SECONDARY_COLOR,
             pinned: true,
             automaticallyImplyLeading: false,
             toolbarHeight: 110.h,
@@ -29,7 +36,7 @@ class StudentsScreen extends StatelessWidget {
                     alignment: Alignment.topRight,
                     child: Padding(
                       padding: EdgeInsets.all(18.0.sp),
-                      child: Icon(size: 25.sp, color: Colors.white, Icons.menu),
+                      child: DrawerComponent(),
                     ),
                   ),
                   Align(
@@ -42,10 +49,17 @@ class StudentsScreen extends StatelessWidget {
                         children: [
                           Expanded(
                             child: Obx(
-                              () => AnimatedOpacity(
-                                duration: const Duration(milliseconds: 100),
-                                opacity: _screenController.opacity.value,
-                                child: Image.asset('assets/images/1.jpg'),
+                              () => Hero(
+                                transitionOnUserGestures: true,
+                                tag: (Get.find<AuthController>().time.value ==
+                                        "am")
+                                    ? "evening"
+                                    : "morning",
+                                child: AnimatedOpacity(
+                                  duration: const Duration(milliseconds: 100),
+                                  opacity: _screenController.opacity.value,
+                                  child: Image.asset('assets/images/1.jpg'),
+                                ),
                               ),
                             ),
                           ),
@@ -53,7 +67,11 @@ class StudentsScreen extends StatelessWidget {
                             padding:
                                 EdgeInsets.only(right: 18.0.sp, left: 18.0.sp),
                             child: SizedBox(
-                              child: TextFormField(
+                              child: TextField(
+                                onEditingComplete: () {
+                                  _screenController.getStudents();
+                                },
+                                controller: _screenController.searchController,
                                 decoration: InputDecoration(
                                   contentPadding: EdgeInsets.only(
                                       top: 10.sp, bottom: 10.sp),
@@ -77,68 +95,94 @@ class StudentsScreen extends StatelessWidget {
               ),
             ),
           ),
-          SliverAnimatedList(
-            initialItemCount: 50,
-            itemBuilder:
-                (BuildContext context, int index, Animation<double> animation) {
-              return SizeTransition(
-                sizeFactor: animation,
-                child: buildCardStudent(context: context),
-              );
-            },
+          Obx(
+            () => (_screenController.isLoadStudents.value)
+                ? const StudentsProgressList()
+                : (_screenController.students.isNotEmpty)
+                    ? SliverAnimatedList(
+                        key: _screenController.listKye,
+                        initialItemCount: _screenController.students.length,
+                        itemBuilder: (BuildContext context, int index,
+                            Animation<double> animation) {
+                          return ScaleTransition(
+                            filterQuality: FilterQuality.high,
+                            scale: animation,
+                            child: buildCardStudent(
+                                context: context,
+                                student: _screenController.students[index]),
+                          );
+                        },
+                      )
+                    : SliverAnimatedList(
+                        initialItemCount: 1,
+                        itemBuilder: (BuildContext context, int index,
+                            Animation<double> animation) {
+                          return ScaleTransition(
+                            filterQuality: FilterQuality.high,
+                            scale: animation,
+                            child:SizedBox(height: 300.h,
+                            child:  Center(child: Text('no_data'.tr),),),
+                          );
+                        },
+                      ),
           )
         ],
       ),
     );
   }
 
-  Widget buildCardStudent({required BuildContext context}) {
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      height: 60.h,
-      margin: EdgeInsets.only(top: 5.h, right: 20.w, left: 20.w),
-      child: SizedBox(
-        child: Card(
-          elevation: 2,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(1500.0.sp),
-          ),
-          child: Padding(
-            padding: EdgeInsets.only(left: 18.0.sp),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
+  Widget buildCardStudent(
+      {required BuildContext context, required StudentsModel student}) {
+    return InkWell(
+      onTap: () {},
+      child: Container(
+        width: MediaQuery.of(context).size.width,
+        height: 60.h,
+        margin: EdgeInsets.only(top: 5.h, right: 20.w, left: 20.w),
+        child: SizedBox(
+          child: Card(
+            elevation: 2,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(1500.0.sp),
+            ),
+            child: Stack(
+              alignment: Alignment.center,
               children: [
-                buildImage(),
-                Text('data'),
-                Text('data'),
+                Positioned(
+                  right: Get.locale!.languageCode == "ar" ? 0 : null,
+                  left: Get.locale!.languageCode == "en" ? 0 : null,
+                  child: AvatarComponent(
+                    bgColor: AppColors.DARK_COLOR,
+                    radius: 29.sp,
+                    widget: CircleAvatar(
+                      radius: 26.5.sp,
+                      backgroundImage: NetworkImage(student.img!),
+                    ),
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
+                      width: 31.sp,
+                    ),
+                    Text(student.name!),
+                    Container(
+                      padding: (Get.locale!.languageCode == "ar")
+                          ? EdgeInsets.only(left: 20.w)
+                          : EdgeInsets.only(right: 20.w),
+                      child: CircleAvatar(
+                        backgroundColor: (student.status == "present")
+                            ? Colors.green
+                            : Colors.red,
+                        radius: 10.sp,
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget buildImage() {
-    return Container(
-
-      width: 59.sp,
-      height: 59.sp,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(250.sp),
-      ),
-      child: Center(
-        child: Container(
-          width: 54.sp,
-          height: 54.sp,
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(250.sp),
-              color: Colors.white,
-              image: DecorationImage(
-                  image: AssetImage('assets/images/1.jpg'), fit: BoxFit.cover)),
-          // child: Image.asset('assets/images/1.jpg' ,fit: BoxFit.cover),
         ),
       ),
     );

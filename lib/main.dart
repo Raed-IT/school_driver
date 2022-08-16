@@ -1,13 +1,17 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:school_driver/app/data/global/get_storage.dart';
 import 'package:school_driver/app/data/global/global%20Auth/auth_binding.dart';
 import 'package:school_driver/app/data/global/global%20Auth/auth_controller.dart';
 import 'package:school_driver/app/data/global/translation_app.dart';
+import 'package:school_driver/app/data/models/driver_model.dart';
 import 'package:school_driver/app/route/get_pages.dart';
 import 'package:school_driver/app/route/routs.dart';
-import 'package:school_driver/app/theme/app_colors.dart';
 import 'package:school_driver/app/theme/them_data.dart';
 
 void main() async {
@@ -26,10 +30,21 @@ class App extends StatelessWidget {
     ScreenUtil.init(
       context,
     );
-    return ScreenUtilInit(
-      builder: (BuildContext context, Widget? child) => GetMaterialApp(
+
+    return ScreenUtilInit(builder: (BuildContext context, Widget? child) {
+      EasyLoading.instance
+        ..displayDuration = const Duration(milliseconds: 2000)
+        ..indicatorType = EasyLoadingIndicatorType.wave //fadingCircle
+        ..loadingStyle = EasyLoadingStyle.light
+        ..indicatorSize = 45.0.h
+        ..radius = 10.0
+        ..maskColor = Colors.blue.withOpacity(0.5)
+        ..userInteractions = true
+        ..dismissOnTap = false;
+      return GetMaterialApp(
+        builder: EasyLoading.init(),
         theme: ThemeAppData.themeData,
-        initialRoute: AppRouters.STUDENTS_SCREEN,
+        initialRoute: AppRouters.SPLASH_SCREEN,
         getPages: GetPagesProvider.getPages,
         debugShowCheckedModeBanner: false,
         translations: TranslationApp(),
@@ -39,7 +54,7 @@ class App extends StatelessWidget {
         home: Scaffold(
           body: Container(),
         ),
-      ),
-    );
+      );
+    });
   }
 }

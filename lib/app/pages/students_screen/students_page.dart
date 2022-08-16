@@ -12,6 +12,7 @@ class StudentsPage  extends GetPage{
       name: AppRouters.STUDENTS_SCREEN,
       page: () => StudentsScreen(),
       binding: StudentsBinding(),
+      transition: Transition.cupertinoDialog,
       transitionDuration: const Duration(milliseconds: 500),
     middlewares: [IsLoginMiddleware()]
   );

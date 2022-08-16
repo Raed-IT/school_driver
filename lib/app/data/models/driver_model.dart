@@ -4,7 +4,11 @@ class DriverModel {
   String? name;
   String? img;
 
-  DriverModel({this.id, this.phone, this.name, this.img});
+  DriverModel(
+      {required this.id,
+      required this.phone,
+      required this.name,
+      required this.img});
 
   DriverModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];

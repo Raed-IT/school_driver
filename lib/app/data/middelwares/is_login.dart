@@ -10,7 +10,8 @@ class IsLoginMiddleware extends GetMiddleware {
   AuthController authController = Get.find<AuthController>();
   @override
   RouteSettings? redirect(String? route) {
-      if (_authController.token.value!=null) {
+    // print (" ================= ${_authController.token.value}");
+      if (_authController.token.value==null) {
         return const RouteSettings(name: AppRouters.LOGIN_SCREEN);
       }
     return null;
