@@ -1,4 +1,7 @@
 const Map<String, String> en = {
+  "student_name":"Student Name",
+  "logout": "Log Out ",
+  "no_connect_to_internet": "No Connect To Internet ",
   "clos_app_content": "Close App ",
   "close": "Close ",
   "no": " Cancel",
@@ -19,5 +22,7 @@ const Map<String, String> en = {
   "un_know_error": "Un Know Error ",
   "success": "Success ",
   "company": "Powered By MADA COMPANY",
-  "no_data": "No Students Found Now "
+  "no_data": "No Students Found Now ",
+  "section": "Section ",
+  "department": "Department",
 };

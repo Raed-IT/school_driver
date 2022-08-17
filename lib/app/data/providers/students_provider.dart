@@ -8,6 +8,7 @@ class StudentsProvider extends GetConnect {
   final AuthController _authController = Get.find();
 
   Future<Response> getStudents({required String time, String? search}) async {
+    print ("time == >> $time     Searh ==> $search");
     Map<String, String> headers = {
       HttpHeaders.contentTypeHeader: "application/json",
       HttpHeaders.authorizationHeader: "Bearer ${_authController.token}"

@@ -4,9 +4,11 @@ import 'package:get/get.dart';
 import 'package:school_driver/app/data/global/global%20Auth/auth_controller.dart';
 import 'package:school_driver/app/data/models/students_model.dart';
 import 'package:school_driver/app/pages/components/avatar_component.dart';
-import 'package:school_driver/app/pages/components/drawer_component.dart';
+import 'package:school_driver/app/pages/components/drawer/drawer_component.dart';
+import 'package:school_driver/app/pages/components/drawer/drawer_icon_component.dart';
 import 'package:school_driver/app/pages/students_screen/componnetns/students_progress.dart';
 import 'package:school_driver/app/pages/students_screen/students_controller.dart';
+import 'package:school_driver/app/route/routs.dart';
 import 'package:school_driver/app/theme/app_colors.dart';
 
 class StudentsScreen extends StatelessWidget {
@@ -17,116 +19,125 @@ class StudentsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: CustomScrollView(
-        controller: _screenController.scrollController,
-        physics: BouncingScrollPhysics(),
-        slivers: [
-          SliverAppBar(
-            backgroundColor: (_authController.time.value == "am")
-                ? AppColors.PRIMARY_COLOR
-                : AppColors.SECONDARY_COLOR,
-            pinned: true,
-            automaticallyImplyLeading: false,
-            toolbarHeight: 110.h,
-            expandedHeight: 230.h,
-            flexibleSpace: SafeArea(
-              child: Stack(
-                children: [
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: Padding(
-                      padding: EdgeInsets.all(18.0.sp),
-                      child: DrawerComponent(),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Container(
-                      margin: EdgeInsets.only(bottom: 20.h),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            child: Obx(
-                              () => Hero(
-                                transitionOnUserGestures: true,
-                                tag: (Get.find<AuthController>().time.value ==
-                                        "am")
-                                    ? "evening"
-                                    : "morning",
-                                child: AnimatedOpacity(
-                                  duration: const Duration(milliseconds: 100),
-                                  opacity: _screenController.opacity.value,
-                                  child: Image.asset('assets/images/1.jpg'),
-                                ),
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding:
-                                EdgeInsets.only(right: 18.0.sp, left: 18.0.sp),
-                            child: SizedBox(
-                              child: TextField(
-                                onEditingComplete: () {
-                                  _screenController.getStudents();
-                                },
-                                controller: _screenController.searchController,
-                                decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.only(
-                                      top: 10.sp, bottom: 10.sp),
-                                  filled: true,
-                                  fillColor: Colors.white,
-                                  prefixIcon: const Icon(Icons.search_outlined),
-                                  border: OutlineInputBorder(
-                                    borderSide: BorderSide.none,
-                                    borderRadius: BorderRadius.circular(500.sp),
-                                  ),
-                                  hintText: 'search_students'.tr,
-                                ),
-                              ),
-                            ),
-                          )
-                        ],
+      body: DrawerComponent(
+        child: CustomScrollView(
+          controller: _screenController.scrollController,
+          physics: const BouncingScrollPhysics(),
+          slivers: [
+            SliverAppBar(
+              backgroundColor: (_authController.time.value == "pm")
+                  ? AppColors.PRIMARY_COLOR
+                  : AppColors.SECONDARY_COLOR,
+              pinned: true,
+              automaticallyImplyLeading: false,
+              toolbarHeight: 110.h,
+              expandedHeight: 230.h,
+              flexibleSpace: SafeArea(
+                child: Stack(
+                  children: [
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: Padding(
+                        padding: EdgeInsets.all(18.0.sp),
+                        child: DrawerIconComponent(),
                       ),
                     ),
-                  ),
-                ],
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Container(
+                        margin: EdgeInsets.only(bottom: 20.h),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              child: Obx(
+                                () => Hero(
+                                  transitionOnUserGestures: true,
+                                  tag: (Get.find<AuthController>().time.value ==
+                                          "pm")
+                                      ? "evening"
+                                      : "morning",
+                                  child: AnimatedOpacity(
+                                    duration: const Duration(milliseconds: 100),
+                                    opacity: _screenController.opacity.value,
+                                    child: Image.asset('assets/images/1.jpg'),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  right: 18.0.sp, left: 18.0.sp),
+                              child: SizedBox(
+                                child: TextField(
+                                  onEditingComplete: () {
+                                    _screenController.getStudents();
+                                  },
+                                  controller:
+                                      _screenController.searchController,
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.only(
+                                        top: 10.sp, bottom: 10.sp),
+                                    filled: true,
+                                    fillColor: Colors.white,
+                                    prefixIcon:
+                                        const Icon(Icons.search_outlined),
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide.none,
+                                      borderRadius:
+                                          BorderRadius.circular(500.sp),
+                                    ),
+                                    hintText: 'search_students'.tr,
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-          Obx(
-            () => (_screenController.isLoadStudents.value)
-                ? const StudentsProgressList()
-                : (_screenController.students.isNotEmpty)
-                    ? SliverAnimatedList(
-                        key: _screenController.listKye,
-                        initialItemCount: _screenController.students.length,
-                        itemBuilder: (BuildContext context, int index,
-                            Animation<double> animation) {
-                          return ScaleTransition(
-                            filterQuality: FilterQuality.high,
-                            scale: animation,
-                            child: buildCardStudent(
-                                context: context,
-                                student: _screenController.students[index]),
-                          );
-                        },
-                      )
-                    : SliverAnimatedList(
-                        initialItemCount: 1,
-                        itemBuilder: (BuildContext context, int index,
-                            Animation<double> animation) {
-                          return ScaleTransition(
-                            filterQuality: FilterQuality.high,
-                            scale: animation,
-                            child:SizedBox(height: 300.h,
-                            child:  Center(child: Text('no_data'.tr),),),
-                          );
-                        },
-                      ),
-          )
-        ],
+            Obx(
+              () => (_screenController.isLoadStudents.value)
+                  ? const StudentsProgressList()
+                  : (_screenController.students.isNotEmpty)
+                      ? SliverAnimatedList(
+                          key: _screenController.listKye,
+                          initialItemCount: _screenController.students.length,
+                          itemBuilder: (BuildContext context, int index,
+                              Animation<double> animation) {
+                            return ScaleTransition(
+                              filterQuality: FilterQuality.high,
+                              scale: animation,
+                              child: buildCardStudent(
+                                  context: context,
+                                  student: _screenController.students[index]),
+                            );
+                          },
+                        )
+                      : SliverAnimatedList(
+                          initialItemCount: 1,
+                          itemBuilder: (BuildContext context, int index,
+                              Animation<double> animation) {
+                            return ScaleTransition(
+                              filterQuality: FilterQuality.high,
+                              scale: animation,
+                              child: SizedBox(
+                                height: 300.h,
+                                child: Center(
+                                  child: Text('no_data'.tr),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+            )
+          ],
+        ),
       ),
     );
   }
@@ -134,7 +145,8 @@ class StudentsScreen extends StatelessWidget {
   Widget buildCardStudent(
       {required BuildContext context, required StudentsModel student}) {
     return InkWell(
-      onTap: () {},
+      onTap: () =>
+          Get.toNamed(AppRouters.SHOW_STUDENT, arguments: {"student": student}),
       child: Container(
         width: MediaQuery.of(context).size.width,
         height: 60.h,
@@ -151,12 +163,16 @@ class StudentsScreen extends StatelessWidget {
                 Positioned(
                   right: Get.locale!.languageCode == "ar" ? 0 : null,
                   left: Get.locale!.languageCode == "en" ? 0 : null,
-                  child: AvatarComponent(
-                    bgColor: AppColors.DARK_COLOR,
-                    radius: 29.sp,
-                    widget: CircleAvatar(
-                      radius: 26.5.sp,
-                      backgroundImage: NetworkImage(student.img!),
+                  child: Hero(
+                    transitionOnUserGestures: true,
+                    tag: student.address!,
+                    child: AvatarComponent(
+                      bgColor: AppColors.DARK_COLOR,
+                      radius: 29.sp,
+                      widget: CircleAvatar(
+                        radius: 26.5.sp,
+                        backgroundImage: NetworkImage(student.img!),
+                      ),
                     ),
                   ),
                 ),

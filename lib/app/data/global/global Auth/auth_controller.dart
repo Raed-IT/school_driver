@@ -1,3 +1,4 @@
+import 'package:flutter_zoom_drawer/config.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:school_driver/app/data/global/get_storage.dart';
@@ -7,6 +8,7 @@ import 'package:school_driver/app/route/routs.dart';
 class AuthController extends GetxController {
   RxnString token = RxnString();
   Rxn<DriverModel> driver = Rxn<DriverModel>();
+  ZoomDrawerController drawerController = ZoomDrawerController();
   RxString time =RxString("am");
   @override
   void onInit() {

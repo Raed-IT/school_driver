@@ -9,6 +9,6 @@ class ShowStudentPage  extends GetPage{
       name: AppRouters.SHOW_STUDENT,
       page: () => ShowStudentScreen(),
       binding: ShowStudentBinding(),
+      transition:  Transition.cupertinoDialog,
       transitionDuration: const Duration(milliseconds: 500));
-
 }
