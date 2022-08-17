@@ -29,7 +29,7 @@ class ShowStudentScreen extends StatelessWidget {
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(
-          320.h,
+          310.h,
         ),
         child: Hero(
           flightShuttleBuilder: (
@@ -43,7 +43,7 @@ class ShowStudentScreen extends StatelessWidget {
               animation: animation,
               builder: (context, value) {
                 return AnimatedOpacity(
-                  opacity: animation.value,
+                  opacity: animation.value > 0.2 ? animation.value : 0,
                   duration: const Duration(microseconds: 100),
                   child: Stack(
                     children: [
@@ -64,15 +64,15 @@ class ShowStudentScreen extends StatelessWidget {
                         child: Align(
                           alignment: Alignment.bottomCenter,
                           child: AvatarComponent(
-                            radius: 75.sp,
+                            radius: 75.h,
                             widget: (Get.arguments != null)
                                 ? CircleAvatar(
-                                    radius: 70.sp,
+                                    radius: 70.h,
                                     backgroundImage: NetworkImage(
                                         Get.arguments['student'].img),
                                   )
                                 : CircleAvatar(
-                                    radius: 70.sp,
+                                    radius: 70.h,
                                     backgroundImage:
                                         AssetImage('assets/images/avatar.png'),
                                   ),
@@ -90,7 +90,7 @@ class ShowStudentScreen extends StatelessWidget {
           child: Stack(
             children: [
               Container(
-                margin: EdgeInsets.only(bottom: 35.sp),
+                margin: EdgeInsets.only(bottom: 35.h),
                 height: 280.h,
                 decoration: BoxDecoration(
                   color: (_authController.time.value == "pm")
@@ -106,9 +106,9 @@ class ShowStudentScreen extends StatelessWidget {
                 child: Align(
                   alignment: Alignment.bottomCenter,
                   child: AvatarComponent(
-                    radius: 75.sp,
+                    radius: 75.h,
                     widget: CircleAvatar(
-                      radius: 70.sp,
+                      radius: 70.h,
                       backgroundImage:
                           NetworkImage(Get.arguments['student'].img),
                     ),
@@ -138,7 +138,7 @@ class ShowStudentScreen extends StatelessWidget {
             endIndent: 30.0.w,
             thickness: 1.2.sp,
             indent: 30.0.w,
-            height: 50.h,
+            height: 20.h,
           ),
           Row(
             children: [
@@ -198,39 +198,41 @@ class ShowStudentScreen extends StatelessWidget {
               ),
             ],
           ),
-          Obx(
-            () => Container(
-              margin: EdgeInsets.all(30.sp),
-              child: SizedBox(
-                height: 130.h,
-                child: GoogleMap(
-                  zoomControlsEnabled: false,
-                  onTap: (d) {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => MapScreen(
-                              studentsPosition:
-                                  _controller.studentsLocation.value!,
-                              marker: _controller.markers.value)),
-                    );
-                  },
-                  //Map widget from google_maps_flutter package
-                  zoomGesturesEnabled: true,
-                  //enable Zoom in, out on map
-                  initialCameraPosition: CameraPosition(
-                    //innital position in map
-                    target: _controller.studentsLocation.value!,
-                    //initial position
-                    zoom: 17.0, //initial zoom level
+          Expanded(
+            child: Obx(
+              () => Container(
+                margin: EdgeInsets.all(30.sp),
+                child: SizedBox(
+                  height: 130.h,
+                  child: GoogleMap(
+                    zoomControlsEnabled: false,
+                    onTap: (d) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => MapScreen(
+                                studentsPosition:
+                                    _controller.studentsLocation.value!,
+                                marker: _controller.markers.value)),
+                      );
+                    },
+                    //Map widget from google_maps_flutter package
+                    zoomGesturesEnabled: true,
+                    //enable Zoom in, out on map
+                    initialCameraPosition: CameraPosition(
+                      //innital position in map
+                      target: _controller.studentsLocation.value!,
+                      //initial position
+                      zoom: 17.0, //initial zoom level
+                    ),
+                    markers: _controller.markers.value,
+                    //markers to show on map
+                    mapType: MapType.satellite,
+                    //map type
+                    onMapCreated: (controller) {
+                      //method called when map is created
+                    },
                   ),
-                  markers: _controller.markers.value,
-                  //markers to show on map
-                  mapType: MapType.satellite,
-                  //map type
-                  onMapCreated: (controller) {
-                    //method called when map is created
-                  },
                 ),
               ),
             ),

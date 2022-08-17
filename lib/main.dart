@@ -1,15 +1,11 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:school_driver/app/data/global/get_storage.dart';
 import 'package:school_driver/app/data/global/global%20Auth/auth_binding.dart';
 import 'package:school_driver/app/data/global/global%20Auth/auth_controller.dart';
 import 'package:school_driver/app/data/global/translation_app.dart';
-import 'package:school_driver/app/data/models/driver_model.dart';
 import 'package:school_driver/app/route/get_pages.dart';
 import 'package:school_driver/app/route/routs.dart';
 import 'package:school_driver/app/theme/them_data.dart';

@@ -12,26 +12,33 @@ class LoginScreen extends StatelessWidget {
     var size = MediaQuery.of(context).size;
     final LoginScreenController _controller = Get.find<LoginScreenController>();
     return Scaffold(
-      extendBody: false,
-      body: Center(
-        child: Container(
-          child: Stack(
-            children: [
-              SizedBox(
+      extendBody: true,
+      body: Container(
+        height: size.height,
+        width: size.width,
+        child: Stack(
+          children: [
+            SizedBox(
+              height: size.height,
+              width: size.width,
+              child:
+                  SvgPicture.asset('assets/images/BG.svg', fit: BoxFit.cover),
+            ),
+            SingleChildScrollView(
+              child: Container(
                 height: size.height,
                 width: size.width,
-                child:
-                    SvgPicture.asset('assets/images/BG.svg', fit: BoxFit.cover),
-              ),
-              Container(
                 padding: EdgeInsets.only(left: 40.w, right: 40.w),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Spacer(),
-                    Container(
-                      child: LogoComponent(height: 250.h,width: 270.w,),
+                    Expanded(
+                      flex: 1,
+                      child: LogoComponent(
+                        height: 250.h,
+                        width: 270.w,
+                      ),
                     ),
                     const Spacer(flex: 2),
                     Form(
@@ -39,18 +46,19 @@ class LoginScreen extends StatelessWidget {
                       child: Column(
                         children: [
                           buildTextFieldWidget(
-                              icon: Icons.account_box_outlined,
-                              hint: "user_name",
-                              textEditingController:
-                                  _controller.usernameController,
-                              validator: (d) {
-                                if (d!.isEmpty) {
-                                  return "required".tr;
-                                } else if (d.length < 4) {
-                                  return "validation_short".tr;
-                                }
-                                return null;
-                              }),
+                            icon: Icons.account_box_outlined,
+                            hint: "user_name",
+                            textEditingController:
+                                _controller.usernameController,
+                            validator: (d) {
+                              if (d!.isEmpty) {
+                                return "required".tr;
+                              } else if (d.length < 4) {
+                                return "validation_short".tr;
+                              }
+                              return null;
+                            },
+                          ),
                           SizedBox(
                             height: 15.h,
                           ),
@@ -117,9 +125,9 @@ class LoginScreen extends StatelessWidget {
                     const Spacer(),
                   ],
                 ),
-              )
-            ],
-          ),
+              ),
+            )
+          ],
         ),
       ),
     );

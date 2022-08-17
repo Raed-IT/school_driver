@@ -168,9 +168,9 @@ class StudentsScreen extends StatelessWidget {
                     tag: student.address!,
                     child: AvatarComponent(
                       bgColor: AppColors.DARK_COLOR,
-                      radius: 29.sp,
+                      radius: 25.8.h,
                       widget: CircleAvatar(
-                        radius: 26.5.sp,
+                        radius: 24.h,
                         backgroundImage: NetworkImage(student.img!),
                       ),
                     ),

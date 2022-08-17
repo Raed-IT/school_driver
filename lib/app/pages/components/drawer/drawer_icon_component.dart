@@ -12,6 +12,7 @@ class DrawerIconComponent extends StatelessWidget {
       icon: Icon(Icons.menu),
       color: Colors.white,
       onPressed: () {
+        print ('================');
         _authController.drawerController.toggle?.call();
       },
     );
