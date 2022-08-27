@@ -1,4 +1,5 @@
 class StudentsModel {
+  int? id ;
   String? name;
   String? img;
   String? address;
@@ -9,7 +10,9 @@ class StudentsModel {
   String? department;
 
   StudentsModel(
-      {this.name,
+      {
+        this.id,
+        this.name,
         this.img,
         this.address,
         this.status,
@@ -21,6 +24,7 @@ class StudentsModel {
   StudentsModel.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     img = json['img'];
+    id= json['id'];
     address = json['address'];
     status = json['status'];
     lat = json['lat'];

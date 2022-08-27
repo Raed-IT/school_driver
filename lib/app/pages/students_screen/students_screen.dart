@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 import 'package:school_driver/app/data/global/global%20Auth/auth_controller.dart';
 import 'package:school_driver/app/data/models/students_model.dart';
 import 'package:school_driver/app/pages/components/avatar_component.dart';
@@ -20,6 +21,7 @@ class StudentsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: DrawerComponent(
+        zoomDrawerController: _screenController.zoomDrawerController,
         child: CustomScrollView(
           controller: _screenController.scrollController,
           physics: const BouncingScrollPhysics(),
@@ -39,7 +41,10 @@ class StudentsScreen extends StatelessWidget {
                       alignment: Alignment.topRight,
                       child: Padding(
                         padding: EdgeInsets.all(18.0.sp),
-                        child: DrawerIconComponent(),
+                        child: DrawerIconComponent(
+                            toggleDrawer: () => _screenController
+                                .zoomDrawerController.toggle!
+                                .call()),
                       ),
                     ),
                     Align(
@@ -61,7 +66,8 @@ class StudentsScreen extends StatelessWidget {
                                   child: AnimatedOpacity(
                                     duration: const Duration(milliseconds: 100),
                                     opacity: _screenController.opacity.value,
-                                    child: Image.asset('assets/images/1.jpg'),
+                                    child: Lottie.asset(Get.arguments['json'],
+                                        height: 90.h, width: 150.w),
                                   ),
                                 ),
                               ),
@@ -165,7 +171,7 @@ class StudentsScreen extends StatelessWidget {
                   left: Get.locale!.languageCode == "en" ? 0 : null,
                   child: Hero(
                     transitionOnUserGestures: true,
-                    tag: student.address!,
+                    tag: student.id!,
                     child: AvatarComponent(
                       bgColor: AppColors.DARK_COLOR,
                       radius: 25.8.h,

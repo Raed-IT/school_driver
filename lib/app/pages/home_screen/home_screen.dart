@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 import 'package:school_driver/app/data/global/global%20Auth/auth_controller.dart';
 import 'package:school_driver/app/pages/components/avatar_component.dart';
 import 'package:school_driver/app/pages/components/drawer/drawer_component.dart';
 import 'package:school_driver/app/pages/components/drawer/drawer_icon_component.dart';
+import 'package:school_driver/app/pages/home_screen/home_conteoller.dart';
 import 'package:school_driver/app/route/routs.dart';
 import 'package:school_driver/app/theme/app_colors.dart';
 import 'package:show_up_animation/show_up_animation.dart';
@@ -13,11 +14,13 @@ import 'package:show_up_animation/show_up_animation.dart';
 class HomeScreen extends StatelessWidget {
   HomeScreen({Key? key}) : super(key: key);
   final AuthController _authController = Get.find<AuthController>();
+  final HomeController _homeController = Get.find<HomeController>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: DrawerComponent(
+        zoomDrawerController: _homeController.zoomDrawerController,
         child: Scaffold(
           appBar: AppBar(
             automaticallyImplyLeading: false,
@@ -31,7 +34,10 @@ class HomeScreen extends StatelessWidget {
                       children: [
                         Padding(
                           padding: EdgeInsets.all(18.0.sp),
-                          child: DrawerIconComponent(),
+                          child: DrawerIconComponent(
+                              toggleDrawer: () => _homeController
+                                  .zoomDrawerController.toggle!
+                                  .call()),
                         )
                       ],
                     ),
@@ -44,8 +50,8 @@ class HomeScreen extends StatelessWidget {
                             radius: 75.sp,
                             widget: CircleAvatar(
                               radius: 70.sp,
-                              backgroundImage:
-                                  const AssetImage('assets/images/1.jpg'),
+                              backgroundImage: NetworkImage(
+                                  "${_authController.driver.value?.img}"),
                             ),
                           ),
                           SizedBox(
@@ -117,22 +123,24 @@ class HomeScreen extends StatelessWidget {
                     height: 70.h,
                   ),
                   buildButton(
+                      json:"assets/jsons/sunshine.json",
                       tag: 'morning',
                       onTap: () {
                         Get.find<AuthController>().time('am');
-                        Get.toNamed(
-                          AppRouters.STUDENTS_SCREEN,
-                        );
+                        Get.toNamed(AppRouters.STUDENTS_SCREEN,
+                            arguments: {'json': "assets/jsons/sunshine.json"});
                       },
                       context: context,
                       bgAvatarColor: AppColors.SECONDARY_COLOR,
                       label: 'morning_shift',
                       bgColor: AppColors.SECONDARY_GRADIENT_COLOR),
                   buildButton(
+                      json:"assets/jsons/Moon-light.json" ,
                       tag: 'evening',
                       onTap: () {
                         Get.find<AuthController>().time('pm');
-                        Get.toNamed(AppRouters.STUDENTS_SCREEN);
+                        Get.toNamed(AppRouters.STUDENTS_SCREEN,
+                            arguments: {'json': "assets/jsons/Moon-light.json"});
                       },
                       context: context,
                       bgAvatarColor: AppColors.PRIMARY_COLOR,
@@ -151,14 +159,16 @@ class HomeScreen extends StatelessWidget {
   /*
 
   */
-  Widget buildButton(
-      {required String label,
-      required List<Color> bgColor,
-      Alignment? alignment,
-      required Color bgAvatarColor,
-      required BuildContext context,
-      required void Function()? onTap,
-      required String tag}) {
+  Widget buildButton({
+    required String label,
+    required List<Color> bgColor,
+    Alignment? alignment,
+    required Color bgAvatarColor,
+    required BuildContext context,
+    required void Function()? onTap,
+    required String tag,
+    required String json,
+  }) {
     return InkWell(
       onTap: onTap,
       child: Container(
@@ -171,7 +181,10 @@ class HomeScreen extends StatelessWidget {
               onTap: onTap,
               child: Container(
                 decoration: BoxDecoration(
-                  gradient: LinearGradient(colors: bgColor),
+                  gradient: LinearGradient(
+                      colors: bgColor,
+                      begin: Alignment.centerRight,
+                      end: Alignment.centerLeft),
                   borderRadius: BorderRadius.circular(500.sp),
                 ),
                 height: 40.h,
@@ -194,12 +207,22 @@ class HomeScreen extends StatelessWidget {
               tag: tag,
               child: Align(
                 alignment: alignment ?? Alignment.centerRight,
-                child: AvatarComponent(
-                  radius: 37.sp,
-                  widget: CircleAvatar(
-                    backgroundColor: bgAvatarColor,
-                    radius: 33.sp,
-                    backgroundImage: const AssetImage('assets/images/1.jpg'),
+                child: Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(500.sp),
+                    ),
+                  ),
+                  margin: const EdgeInsets.all(0),
+                  elevation: 7,
+                  child: AvatarComponent(
+                    bgColor: Colors.white,
+                    radius: 37.sp,
+                    widget: CircleAvatar(
+                      backgroundColor: bgAvatarColor,
+                      radius: 35.sp,
+                      child: Lottie.asset(json),
+                    ),
                   ),
                 ),
               ),

@@ -28,8 +28,8 @@ class SplashScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               LogoComponent(
-                height: 250.h,
-                width: 200.w,
+                height: 150.h,
+                width: 150.w,
               ),
               Center(
                 child: Text(

@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_zoom_drawer/config.dart';
 import 'package:flutter_zoom_drawer/flutter_zoom_drawer.dart';
-import 'package:get/get.dart';
-import 'package:school_driver/app/data/global/global%20Auth/auth_controller.dart';
-import 'package:school_driver/app/pages/components/drawer/menu_drawer_component.dart';
+
+  import 'package:school_driver/app/pages/components/drawer/menu_drawer_component.dart';
 
 class DrawerComponent extends StatelessWidget {
-  final AuthController _authController = Get.find();
+  // final AuthController   = Get.find();
   Widget child;
+ late ZoomDrawerController zoomDrawerController ;
 
-  DrawerComponent({Key? key, required this.child}) : super(key: key);
+  DrawerComponent({Key? key, required this.child ,required this.zoomDrawerController}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: ZoomDrawer(
-          controller: _authController.drawerController,
+          controller: zoomDrawerController,
           menuScreen: MenuDrawerComponent(),
           mainScreen: child,
           borderRadius: 24.0,

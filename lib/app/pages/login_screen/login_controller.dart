@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:school_driver/app/data/global/get_storage.dart';
 import 'package:school_driver/app/data/global/global%20Auth/auth_controller.dart';
 import 'package:school_driver/app/data/models/driver_model.dart';
@@ -18,13 +19,19 @@ class LoginScreenController extends GetxController {
 
   Future<void> login() async {
     if (formKey.currentState!.validate()) {
+      await OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
+      final status = await OneSignal.shared.getDeviceState();
+      final String? osUserID = status?.userId;
+      print (" ========================= $osUserID");
+
       EasyLoading.show(
         dismissOnTap: true,
       );
       try {
         Response res = await _loginProvider.login({
           "username": usernameController.text,
-          "password": passwordController.text
+          "password": passwordController.text,
+          "token":osUserID!,
         });
          if (res.statusCode == 200) {
           _authController.driver(DriverModel.fromJson(res.body['driver']));

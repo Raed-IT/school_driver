@@ -65,7 +65,7 @@ class ShowStudentScreen extends StatelessWidget {
                           alignment: Alignment.bottomCenter,
                           child: AvatarComponent(
                             radius: 75.h,
-                            widget: (Get.arguments != null)
+                            widget: (Get.arguments['student'] != null)
                                 ? CircleAvatar(
                                     radius: 70.h,
                                     backgroundImage: NetworkImage(
@@ -86,7 +86,7 @@ class ShowStudentScreen extends StatelessWidget {
             );
           },
           transitionOnUserGestures: true,
-          tag: Get.arguments['student'].address,
+          tag: Get.arguments['student'].id,
           child: Stack(
             children: [
               Container(
@@ -110,7 +110,7 @@ class ShowStudentScreen extends StatelessWidget {
                     widget: CircleAvatar(
                       radius: 70.h,
                       backgroundImage:
-                          NetworkImage(Get.arguments['student'].img),
+                          NetworkImage(Get.arguments['student'].img ?? ""),
                     ),
                   ),
                 ),

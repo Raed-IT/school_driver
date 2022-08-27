@@ -33,14 +33,19 @@ class LoginScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
+                    Spacer(),
                     Expanded(
                       flex: 1,
-                      child: LogoComponent(
-                        height: 250.h,
-                        width: 270.w,
+                      child: Center(
+                        child: LogoComponent(
+                          height: 120.h,
+                          width: 120.w,
+                        ),
                       ),
                     ),
-                    const Spacer(flex: 2),
+                    SizedBox(
+                      height: 50.h,
+                    ),
                     Form(
                       key: _controller.formKey,
                       child: Column(
