@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_zoom_drawer/config.dart';
@@ -16,6 +17,14 @@ import 'package:school_driver/app/theme/them_data.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
+
+
   final getIt = GetIt.instance;
   await OneSignal.shared.setAppId("5d63008f-12f2-4f86-868f-0cfe1d46a380");
   getIt.registerSingleton<SingleToneDrawerController>(SingleToneDrawerController());
