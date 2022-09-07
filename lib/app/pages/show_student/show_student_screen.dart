@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:school_driver/app/data/global/global%20Auth/auth_controller.dart';
+import 'package:school_driver/app/data/models/students_model.dart';
 import 'package:school_driver/app/pages/components/avatar_component.dart';
 import 'package:school_driver/app/pages/map_screen/map_screen.dart';
 import 'package:school_driver/app/pages/show_student/show_student_controller.dart';
@@ -14,6 +15,7 @@ class ShowStudentScreen extends StatelessWidget {
   TextStyle? style;
 
   TextStyle? dec;
+  StudentsModel? student = Get.arguments['student'];
 
   @override
   Widget build(BuildContext context) {
@@ -65,16 +67,16 @@ class ShowStudentScreen extends StatelessWidget {
                           alignment: Alignment.bottomCenter,
                           child: AvatarComponent(
                             radius: 75.h,
-                            widget: (Get.arguments['student'] != null)
+                            widget: (student != null)
                                 ? CircleAvatar(
                                     radius: 70.h,
-                                    backgroundImage: NetworkImage(
-                                        Get.arguments['student'].img),
+                                    backgroundImage:
+                                        NetworkImage("${student!.img}"),
                                   )
                                 : CircleAvatar(
                                     radius: 70.h,
-                                    backgroundImage:
-                                        AssetImage('assets/images/avatar.png'),
+                                    backgroundImage: const AssetImage(
+                                        'assets/images/avatar.png'),
                                   ),
                           ),
                         ),

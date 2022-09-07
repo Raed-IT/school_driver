@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_zoom_drawer/config.dart';
 import 'package:get/get.dart';
 import 'package:school_driver/app/data/global/global%20Auth/auth_controller.dart';
+import 'package:school_driver/app/data/global/global%20Auth/check_response.dart';
 import 'package:school_driver/app/data/global/my_exception.dart';
 import 'package:school_driver/app/data/models/students_model.dart';
 import 'package:school_driver/app/data/providers/students_provider.dart';
@@ -38,23 +39,19 @@ class StudentsScreenController extends GetxController {
   }
 
   Future<void> getStudents() async {
-    isLoadStudents(true);
     try {
+      isLoadStudents(true);
       Response res = await _studentsProvider.getStudents(
           time: Get.find<AuthController>().time.value,
           search: searchController.text);
       isLoadStudents(false);
-      students.clear();
-      if (res.statusCode == 200) {
+      bool result = chekResponse(response: res);
+      if (result) {
+        students.clear();
         for (var item in res.body['students']) {
-           students.add(StudentsModel.fromJson(item));
+          students.add(StudentsModel.fromJson(item));
         }
-      } else if (res.statusCode == null) {
-        throw (MyException('no_connect_to_internet'.tr));
       }
-    } on MyException catch (e) {
-      print(e);
-      showSnackBar(message: "$e", success: false);
     } catch (e) {
       print(e);
       showSnackBar(message: "$e", success: false);
