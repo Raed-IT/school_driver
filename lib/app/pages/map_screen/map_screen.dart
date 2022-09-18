@@ -12,23 +12,24 @@ class MapScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: GoogleMap(
-      //Map widget from google_maps_flutter package
-      zoomGesturesEnabled: true,
-      //enable Zoom in, out on map
-      initialCameraPosition: CameraPosition(
-        //innital position in map
-        target: studentsPosition,
-        //initial position
-        zoom: 17.0, //initial zoom level
+      body: GoogleMap(
+        //Map widget from google_maps_flutter package
+        zoomGesturesEnabled: true,
+        //enable Zoom in, out on map
+        initialCameraPosition: CameraPosition(
+          //innital position in map
+          target: studentsPosition,
+          //initial position
+          zoom: 17.0, //initial zoom level
+        ),
+        markers: marker,
+        //markers to show on map
+        mapType: MapType.hybrid,
+        //map type
+        onMapCreated: (controller) {
+          //method called when map is created
+        },
       ),
-      markers: marker,
-      //markers to show on map
-      mapType: MapType.satellite,
-      //map type
-      onMapCreated: (controller) {
-        //method called when map is created
-      },
-    ));
+    );
   }
 }
