@@ -19,10 +19,16 @@ class MenuDrawerComponent extends StatelessWidget {
         SizedBox(height: 150.h),
         AvatarComponent(
           bgColor: AppColors.PRIMARY_COLOR,
-          widget: CircleAvatar(
-            radius: 50.sp,
-            backgroundImage: NetworkImage(_authController.driver.value!.img!),
-          ),
+          widget: (_authController.driver.value!.img == " ")
+              ? CircleAvatar(
+                  radius: 50.sp,
+                  backgroundImage: const AssetImage("assets/images/1.jpg"),
+                )
+              : CircleAvatar(
+                  radius: 50.sp,
+                  backgroundImage:
+                      NetworkImage(_authController.driver.value!.img!),
+                ),
         ),
         Text(
           _authController.driver.value!.name!,

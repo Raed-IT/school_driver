@@ -48,11 +48,17 @@ class HomeScreen extends StatelessWidget {
                         children: [
                           AvatarComponent(
                             radius: 75.sp,
-                            widget: CircleAvatar(
-                              radius: 70.sp,
-                              backgroundImage: NetworkImage(
-                                  "${_authController.driver.value?.img}"),
-                            ),
+                            widget: (_authController.driver.value!.img == " ")
+                                ? CircleAvatar(
+                                    radius: 70.sp,
+                                    backgroundImage:
+                                        const AssetImage("assets/images/1.jpg"),
+                                  )
+                                : CircleAvatar(
+                                    radius: 70.sp,
+                                    backgroundImage: NetworkImage(
+                                        "${_authController.driver.value?.img}"),
+                                  ),
                           ),
                           SizedBox(
                             height: 20.h,
@@ -123,7 +129,7 @@ class HomeScreen extends StatelessWidget {
                     height: 70.h,
                   ),
                   buildButton(
-                      json:"assets/jsons/sunshine.json",
+                      json: "assets/jsons/sunshine.json",
                       tag: 'morning',
                       onTap: () {
                         Get.find<AuthController>().time('am');
@@ -135,12 +141,13 @@ class HomeScreen extends StatelessWidget {
                       label: 'morning_shift',
                       bgColor: AppColors.SECONDARY_GRADIENT_COLOR),
                   buildButton(
-                      json:"assets/jsons/Moon-light.json" ,
+                      json: "assets/jsons/Moon-light.json",
                       tag: 'evening',
                       onTap: () {
                         Get.find<AuthController>().time('pm');
-                        Get.toNamed(AppRouters.STUDENTS_SCREEN,
-                            arguments: {'json': "assets/jsons/Moon-light.json"});
+                        Get.toNamed(AppRouters.STUDENTS_SCREEN, arguments: {
+                          'json': "assets/jsons/Moon-light.json"
+                        });
                       },
                       context: context,
                       bgAvatarColor: AppColors.PRIMARY_COLOR,
