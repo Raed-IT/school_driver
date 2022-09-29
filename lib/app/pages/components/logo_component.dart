@@ -9,7 +9,7 @@ class LogoComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Lottie.asset('assets/jsons/logo.json',
+    return  Lottie.asset('assets/jsons/driver.json',
         width: width??100.w, height: height ?? 200.h,fit: BoxFit.cover);
   }
 }

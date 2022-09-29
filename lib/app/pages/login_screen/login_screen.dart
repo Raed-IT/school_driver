@@ -38,8 +38,8 @@ class LoginScreen extends StatelessWidget {
                       flex: 1,
                       child: Center(
                         child: LogoComponent(
-                          height: 120.h,
-                          width: 120.w,
+                          height: 150.h,
+                          width: 150.w,
                         ),
                       ),
                     ),

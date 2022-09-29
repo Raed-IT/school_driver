@@ -24,14 +24,12 @@ void main() async {
     DeviceOrientation.portraitDown,
   ]);
 
-
   final getIt = GetIt.instance;
   await OneSignal.shared.setAppId("5d63008f-12f2-4f86-868f-0cfe1d46a380");
-  getIt.registerSingleton<SingleToneDrawerController>(SingleToneDrawerController());
-   getIt<SingleToneDrawerController>().zoomDrawerControllerSetter=ZoomDrawerController();
-
-
-
+  getIt.registerSingleton<SingleToneDrawerController>(
+      SingleToneDrawerController());
+  getIt<SingleToneDrawerController>().zoomDrawerControllerSetter =
+      ZoomDrawerController();
 
   await ScreenUtil.ensureScreenSize();
   await GetStorage.init(AppRouters.APP_NAME);

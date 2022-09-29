@@ -53,7 +53,7 @@ class StudentsScreenController extends GetxController {
         }
       }
     } catch (e) {
-      print(e);
+      isLoadStudents(false);
       showSnackBar(message: "$e", success: false);
     }
   }
