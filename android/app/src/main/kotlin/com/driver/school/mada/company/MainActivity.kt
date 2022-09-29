@@ -1,4 +1,4 @@
-package com.example.school_driver
+package com.driver.school.mada.company
 
 import io.flutter.embedding.android.FlutterActivity
 
