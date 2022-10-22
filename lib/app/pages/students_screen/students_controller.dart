@@ -52,7 +52,7 @@ class StudentsScreenController extends GetxController {
           students.add(StudentsModel.fromJson(item));
         }
       }
-    } catch (e) {
+      } catch (e) {
       isLoadStudents(false);
       showSnackBar(message: "$e", success: false);
     }

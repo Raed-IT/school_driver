@@ -9,13 +9,29 @@ class AuthController extends GetxController {
   RxnString token = RxnString();
   Rxn<DriverModel> driver = Rxn<DriverModel>();
   ZoomDrawerController drawerController = ZoomDrawerController();
-  RxString time =RxString("am");
+  RxString time = RxString("am");
+
   @override
   void onInit() {
     super.onInit();
+    chackAuth();
+  }
+
+  void chackAuth() {
     if (GetStorage(AppRouters.APP_NAME).hasData('token')) {
-      token(StorageController.getData(key: "token"));
-      driver(DriverModel.fromJson(StorageController.getData(key: "driver")));
+      List<String> keyModel =
+          StorageController.getData(key: "driver").keys.toList();
+       if (keyModel.contains('logo')) {
+        token(StorageController.getData(key: "token"));
+        driver(
+          DriverModel.fromJson(
+            StorageController.getData(key: "driver"),
+          ),
+        );
+      } else {
+        GetStorage(AppRouters.APP_NAME).erase();
+        chackAuth();
+      }
     }
   }
 }

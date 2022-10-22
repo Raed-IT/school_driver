@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
+import 'package:school_driver/app/data/global/global%20Auth/auth_controller.dart';
 import 'package:school_driver/app/theme/app_colors.dart';
 
 import '../../route/routs.dart';
@@ -16,7 +17,8 @@ class SplashScreen extends StatelessWidget {
     );
     return Scaffold(
       body: Center(
-        child: Column(
+        child: Get.find<AuthController>().driver.value == null
+            ? Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -28,10 +30,34 @@ class SplashScreen extends StatelessWidget {
                   color: AppColors.PRIMARY_COLOR,
                   fontSize: 20.sp,
                   fontWeight: FontWeight.bold),
-            )
+            ),
           ],
+        )
+            : Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.network(
+                Get.find<AuthController>().driver.value!.logo!,
+                width: 150.w,
+                height: 150.h,
+                fit: BoxFit.cover,
+              ),
+              SizedBox(
+                height: 10.h,
+              ),
+              Text(
+                Get.find<AuthController>().driver.value!.schoolName!,
+                style: TextStyle(
+                    color: AppColors.PRIMARY_COLOR,
+                    fontSize: 20.sp,
+                    fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
         ),
       ),
-    );
+    );;
   }
 }

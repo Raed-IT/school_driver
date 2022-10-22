@@ -32,7 +32,7 @@ class LoginScreenController extends GetxController {
           "password": passwordController.text,
           "token": osUserID!,
         });
-
+        print(res.body);
         bool result = chekResponse(response: res);
         if (result) {
           _authController.driver(DriverModel.fromJson(res.body['driver']));

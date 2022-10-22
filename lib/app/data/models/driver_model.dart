@@ -3,26 +3,21 @@ class DriverModel {
   String? phone;
   String? name;
   String? img;
-
+  String? logo;
+  String? schoolName;
   DriverModel(
       {required this.id,
       required this.phone,
       required this.name,
-      required this.img});
+      required this.img,this.logo,this.schoolName});
 
   DriverModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     phone = json['phone'];
     name = json['name'];
     img = json['img'];
+    logo= json['logo'];
+    schoolName= json['school_name'];
   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['phone'] = this.phone;
-    data['name'] = this.name;
-    data['img'] = this.img;
-    return data;
-  }
 }
